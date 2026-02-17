@@ -381,7 +381,7 @@ export default function SessionPage() {
           <h2 className="text-xs text-neutral-500 uppercase tracking-wider font-medium mb-4">Sections</h2>
 
           {session.sections.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
               <p className="text-neutral-500 mb-2">No sections yet</p>
               <p className="text-neutral-400 text-sm">Add sections to define how your soundtrack evolves</p>
             </div>
@@ -459,7 +459,7 @@ export default function SessionPage() {
         ) : (
           <button
             onClick={() => setShowNewSection(true)}
-            className="w-full p-5 border border-dashed border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all mb-8"
+            className="w-full p-5 border border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all mb-8 cursor-pointer"
           >
             <span className="flex items-center justify-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

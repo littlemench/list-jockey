@@ -14,8 +14,11 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
   const [isSearchingArtists, setIsSearchingArtists] = useState(false);
   const [isSearchingTracks, setIsSearchingTracks] = useState(false);
   const [genreFilter, setGenreFilter] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const color = COLORS[index % COLORS.length];
+
+  const emojis = ['🎵', '🎸', '🎹', '🎤', '🎧', '🎺', '🎷', '🥁', '🎻', '🪕', '🪘', '🎼', '🔊', '📻', '💿', '🎶', '🌟', '⚡', '🔥', '💫', '✨', '🌈', '🎯', '🚀'];
 
   useEffect(() => {
     if (isExpanded) {
@@ -118,14 +121,43 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
           style={{ backgroundColor: color }}
         />
         <div className="flex-1 min-w-0">
-          <input
-            type="text"
-            value={section.name}
-            onChange={(e) => onUpdate({ ...section, name: e.target.value })}
-            placeholder="Section name"
-            className="w-full bg-transparent text-lg font-medium text-neutral-900 focus:outline-none"
-          />
-          <div className="flex items-center gap-4 mt-1">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="relative">
+              <button
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="text-2xl hover:scale-110 transition-transform cursor-pointer"
+                title="Change icon"
+              >
+                {section.emoji || '🎵'}
+              </button>
+              {showEmojiPicker && (
+                <div className="absolute z-20 top-full left-0 mt-2 p-3 bg-white border border-neutral-200 rounded-lg shadow-lg">
+                  <div className="grid grid-cols-6 gap-2 max-w-xs">
+                    {emojis.map(emoji => (
+                      <button
+                        key={emoji}
+                        onClick={() => {
+                          onUpdate({ ...section, emoji });
+                          setShowEmojiPicker(false);
+                        }}
+                        className="text-2xl hover:scale-125 transition-transform cursor-pointer"
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <input
+              type="text"
+              value={section.name}
+              onChange={(e) => onUpdate({ ...section, name: e.target.value })}
+              placeholder="Click to edit section name"
+              className="flex-1 bg-transparent text-lg font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 rounded px-2 py-1 -ml-2"
+            />
+          </div>
+          <div className="flex items-center gap-4">
             <input
               type="range"
               min={15}
@@ -164,6 +196,24 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
           {/* Genres */}
           <div>
             <h3 className="text-sm font-medium text-neutral-900 mb-3">Genres</h3>
+            {section.genres?.length > 0 && (
+              <div className="mb-3 p-3 bg-white border border-neutral-200 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium text-neutral-600">Selected ({section.genres.length})</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {section.genres.map(genre => (
+                    <button
+                      key={genre}
+                      onClick={() => handleToggleGenre(genre)}
+                      className="px-3 py-1.5 rounded-full text-sm bg-neutral-900 text-white hover:bg-neutral-700 transition-all cursor-pointer"
+                    >
+                      {genre} ×
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <input
               type="text"
               placeholder="Filter genres..."
@@ -176,7 +226,7 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
                 <button
                   key={genre}
                   onClick={() => handleToggleGenre(genre)}
-                  className={`px-3 py-1.5 rounded-full text-sm transition-all ${
+                  className={`px-3 py-1.5 rounded-full text-sm transition-all cursor-pointer ${
                     section.genres?.includes(genre)
                       ? 'bg-neutral-900 text-white'
                       : 'bg-white border border-neutral-200 text-neutral-700 hover:border-neutral-400'
@@ -186,14 +236,11 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
                 </button>
               ))}
             </div>
-            {section.genres?.length > 0 && (
-              <p className="text-xs text-neutral-500 mt-2">{section.genres.length} selected</p>
-            )}
           </div>
 
           {/* Artists */}
           <div>
-            <h3 className="text-sm font-medium text-neutral-900 mb-3">Artists</h3>
+            <h3 className="text-sm font-medium text-neutral-900 mb-3">Reference Artists</h3>
             <div className="relative mb-3">
               <input
                 type="text"
@@ -300,16 +347,27 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
           {/* BPM & Intensity */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-900 mb-2">BPM</label>
-              <input
-                type="number"
-                min={60}
-                max={200}
-                value={section.bpm || ''}
-                onChange={(e) => onUpdate({ ...section, bpm: e.target.value ? Number(e.target.value) : null })}
-                placeholder="e.g., 120"
-                className="w-full bg-white border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
-              />
+              <label className="block text-sm font-medium text-neutral-900 mb-2">BPM Range</label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  min={60}
+                  max={200}
+                  value={section.bpmMin || ''}
+                  onChange={(e) => onUpdate({ ...section, bpmMin: e.target.value ? Number(e.target.value) : null })}
+                  placeholder="Min"
+                  className="w-full bg-white border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
+                />
+                <input
+                  type="number"
+                  min={60}
+                  max={200}
+                  value={section.bpmMax || ''}
+                  onChange={(e) => onUpdate({ ...section, bpmMax: e.target.value ? Number(e.target.value) : null })}
+                  placeholder="Max"
+                  className="w-full bg-white border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
+                />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-neutral-900 mb-2">
@@ -454,8 +512,9 @@ export default function SessionBuilderPage() {
           </h2>
 
           {sections.length === 0 ? (
-            <div className="text-center py-8 bg-neutral-50 rounded-2xl border border-dashed border-neutral-200 mb-4">
-              <p className="text-neutral-400 text-sm">No sections yet. Add your first section below.</p>
+            <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200 mb-4">
+              <p className="text-neutral-500 mb-2">No sections yet</p>
+              <p className="text-neutral-400 text-sm">Add your first section to get started</p>
             </div>
           ) : (
             <div className="space-y-3 mb-4">
@@ -475,7 +534,7 @@ export default function SessionBuilderPage() {
 
           <button
             onClick={handleAddSection}
-            className="w-full p-4 border border-dashed border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all"
+            className="w-full p-4 border border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all cursor-pointer"
           >
             <span className="flex items-center justify-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -498,7 +557,7 @@ export default function SessionBuilderPage() {
             <button
               onClick={handleCreateSession}
               disabled={!sessionName.trim() || sections.length === 0}
-              className="w-full bg-neutral-900 hover:bg-neutral-800 text-white px-5 py-3.5 rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-neutral-900 hover:bg-neutral-800 text-white px-5 py-3.5 rounded-full font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               Create Session
             </button>
