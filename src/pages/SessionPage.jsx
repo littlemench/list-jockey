@@ -191,14 +191,16 @@ export default function SessionPage() {
   function handleAddSection(e) {
     e.preventDefault();
     if (!newSectionName.trim()) return;
-    addSection(sessionId, {
+    const updatedSession = addSection(sessionId, {
       name: newSectionName.trim(),
       duration: newSectionDuration,
     });
-    setSession(getSession(sessionId));
-    setNewSectionName('');
-    setNewSectionDuration(60);
-    setShowNewSection(false);
+
+    // Navigate to the newly added section
+    if (updatedSession && updatedSession.sections.length > 0) {
+      const newSection = updatedSession.sections[updatedSession.sections.length - 1];
+      navigate(`/session/${sessionId}/section/${newSection.id}`);
+    }
   }
 
   function handleDurationChange(sectionId, duration) {

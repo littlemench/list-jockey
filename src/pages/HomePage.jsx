@@ -1,24 +1,12 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSessions } from '../context/SessionContext';
 import { useSpotify } from '../context/SpotifyContext';
 import { loginWithSpotify } from '../utils/spotify';
 
 export default function HomePage() {
-  const { sessions, createSession, deleteSession } = useSessions();
+  const { sessions, deleteSession } = useSessions();
   const { user, isLoading, isAuthenticated, logout } = useSpotify();
-  const [showNewSession, setShowNewSession] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newDuration, setNewDuration] = useState(180);
-
-  function handleCreateSession(e) {
-    e.preventDefault();
-    if (!newName.trim()) return;
-    createSession(newName.trim(), newDuration);
-    setNewName('');
-    setNewDuration(180);
-    setShowNewSession(false);
-  }
+  const navigate = useNavigate();
 
   function formatDuration(minutes) {
     const hours = Math.floor(minutes / 60);
@@ -85,8 +73,8 @@ export default function HomePage() {
         <div className="space-y-3 mb-8">
           {sessions.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-neutral-500 mb-2">No sessions yet</p>
-              <p className="text-neutral-400 text-sm">Create your first session to get started</p>
+              <p className="text-neutral-500 mb-2">No Sessions Yet</p>
+              <p className="text-neutral-400 text-sm">Build your first session by creating one or more sections to get started</p>
             </div>
           ) : (
             sessions.map((session) => (
@@ -114,63 +102,18 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* New Session Form */}
-        {showNewSession ? (
-          <form onSubmit={handleCreateSession} className="p-6 bg-neutral-50 rounded-2xl border border-neutral-200">
-            <div className="mb-5">
-              <label className="block text-sm text-neutral-500 mb-2 font-medium">Session name</label>
-              <input
-                type="text"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                placeholder="e.g., Saturday House Party"
-                className="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
-                autoFocus
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm text-neutral-500 mb-2 font-medium">
-                Total duration: <span className="text-neutral-900">{formatDuration(newDuration)}</span>
-              </label>
-              <input
-                type="range"
-                min={30}
-                max={480}
-                step={30}
-                value={newDuration}
-                onChange={(e) => setNewDuration(Number(e.target.value))}
-                className="w-full"
-              />
-            </div>
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                className="bg-neutral-900 text-white px-5 py-2.5 rounded-full font-medium hover:bg-neutral-800 transition-colors"
-              >
-                Create Session
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowNewSession(false)}
-                className="text-neutral-500 hover:text-neutral-900 px-5 py-2.5 transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        ) : (
-          <button
-            onClick={() => setShowNewSession(true)}
-            className="w-full p-5 border border-dashed border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all"
-          >
-            <span className="flex items-center justify-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-              </svg>
-              New Session
-            </span>
-          </button>
-        )}
+        {/* New Session Button */}
+        <button
+          onClick={() => navigate('/session/new')}
+          className="w-full p-5 border border-dashed border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all"
+        >
+          <span className="flex items-center justify-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+            </svg>
+            Create New Session
+          </span>
+        </button>
       </div>
     </div>
   );
