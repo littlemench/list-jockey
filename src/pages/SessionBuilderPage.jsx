@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSessions } from '../context/SessionContext';
 import { getGenreSeeds, searchArtists, searchTracks } from '../utils/spotify';
 
-const COLORS = ['#FFAEBC', '#A0E7E5', '#B4F8C8', '#FBE7C6'];
+const COLORS = ['#FF90E8', '#FFA0E0', '#FFB3D9', '#FFC7E3', '#FFD4ED'];
 
 function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onToggleExpand }) {
   const [availableGenres, setAvailableGenres] = useState([]);
@@ -118,7 +118,7 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
   }
 
   return (
-    <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden shadow-sm">
+    <div className="bg-white rounded-lg border border-black overflow-hidden">
       {/* Section Header - Always Visible */}
       <div className="flex items-center gap-4 p-4">
         <div
@@ -131,7 +131,7 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
             value={section.name}
             onChange={(e) => onUpdate({ ...section, name: e.target.value })}
             placeholder="Click to edit section name"
-            className="w-full bg-transparent text-lg font-medium text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 rounded px-2 py-1 mb-1"
+            className="w-full bg-transparent text-base font-semibold text-black focus:outline-none focus:ring-2 focus:ring-black rounded px-2 py-1 mb-1"
           />
           <div className="flex items-center gap-4">
             <input
@@ -198,7 +198,7 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
               placeholder="Filter genres..."
               value={genreFilter}
               onChange={(e) => setGenreFilter(e.target.value)}
-              className="w-full mb-3 bg-white border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
+              className="w-full mb-3 bg-white border border-black rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black placeholder:text-neutral-400 text-black"
             />
             <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
               {filteredGenres.map(genre => (
@@ -335,7 +335,7 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
                   value={section.bpmMin || ''}
                   onChange={(e) => onUpdate({ ...section, bpmMin: e.target.value ? Number(e.target.value) : null })}
                   placeholder="Min"
-                  className="w-full bg-white border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
+                  className="w-full bg-white border border-black rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black placeholder:text-neutral-400 text-black"
                 />
                 <input
                   type="number"
@@ -344,7 +344,7 @@ function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onT
                   value={section.bpmMax || ''}
                   onChange={(e) => onUpdate({ ...section, bpmMax: e.target.value ? Number(e.target.value) : null })}
                   placeholder="Max"
-                  className="w-full bg-white border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
+                  className="w-full bg-white border border-black rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black placeholder:text-neutral-400 text-black"
                 />
               </div>
             </div>
@@ -471,32 +471,32 @@ export default function SessionBuilderPage() {
             </svg>
             Cancel
           </button>
-          <h1 className="text-5xl font-bold tracking-tight text-black mb-4">Create New Session</h1>
-          <p className="text-neutral-600 text-lg">Build your session structure and refine each section</p>
+          <h1 className="text-4xl font-bold tracking-tight text-black mb-4">Create New Session</h1>
+          <p className="text-neutral-600 text-base">Build your session structure and refine each section</p>
         </header>
 
         {/* Session Name */}
         <div className="mb-8">
-          <label className="block text-sm text-neutral-500 mb-2 font-medium">Session Name</label>
+          <label className="block text-sm text-neutral-700 mb-2 font-medium">Session Name</label>
           <input
             type="text"
             value={sessionName}
             onChange={(e) => setSessionName(e.target.value)}
             placeholder="e.g., Saturday House Party"
-            className="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:border-neutral-400 placeholder:text-neutral-400 text-neutral-900"
+            className="w-full bg-white border border-black rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black placeholder:text-neutral-400 text-black"
             autoFocus
           />
         </div>
 
         {/* Sections List */}
         <div className="mb-6">
-          <h2 className="text-sm text-neutral-700 font-medium mb-4">
+          <h2 className="text-base font-semibold text-black mb-4">
             Sections {sections.length > 0 && `(${sections.length})`}
           </h2>
 
           {sections.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-xl mb-4">
-              <p className="text-neutral-400 text-lg mb-2">No sections yet</p>
+            <div className="text-center py-20 bg-white rounded-lg border border-black mb-4">
+              <p className="text-neutral-500 text-base mb-2">No sections yet</p>
               <p className="text-neutral-400 text-sm">Add your first section to get started</p>
             </div>
           ) : (
@@ -517,7 +517,7 @@ export default function SessionBuilderPage() {
 
           <button
             onClick={handleAddSection}
-            className="w-full p-6 bg-black hover:bg-neutral-800 rounded-xl text-white font-medium transition-all cursor-pointer text-lg"
+            className="w-full py-3.5 bg-white hover:bg-neutral-50 rounded-lg text-black font-medium transition-all cursor-pointer text-base border border-black"
           >
             Add Section
           </button>
@@ -535,7 +535,7 @@ export default function SessionBuilderPage() {
             <button
               onClick={handleCreateSession}
               disabled={!sessionName.trim() || sections.length === 0}
-              className="w-full bg-black hover:bg-neutral-800 text-white px-6 py-4 rounded-xl font-medium text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full bg-black hover:bg-neutral-800 text-white py-3.5 rounded-lg font-medium text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               Create Session
             </button>
