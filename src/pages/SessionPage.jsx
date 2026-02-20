@@ -6,8 +6,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useSessions } from '../context/SessionContext';
 import { generateSessionPlaylist } from '../utils/spotify';
 
-// Colors sampled from Gumroad's pricing page cards
-const COLORS = ['#FFE571', '#FF90E8', '#90EE90', '#87CEEB', '#FFB347'];
+const COLORS = ['#ff90e8', '#90a8ed', '#23a094', '#ffc900', '#f1f333'];
 
 function SortableSection({ section, sessionId, onDurationChange, formatDuration, fallbackColorIndex }) {
   const [isEditingDuration, setIsEditingDuration] = useState(false);
