@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSessions } from '../context/SessionContext';
 import { getGenreSeeds, searchArtists, searchTracks } from '../utils/spotify';
 
-const COLORS = ['#FF90E8', '#FFA0E0', '#FFB3D9', '#FFC7E3', '#FFD4ED'];
+// Colors sampled from Gumroad's pricing page cards
+const COLORS = ['#FFE571', '#FF90E8', '#90EE90', '#87CEEB', '#FFB347'];
 
 function ExpandableSection({ section, index, onUpdate, onRemove, isExpanded, onToggleExpand }) {
   const [availableGenres, setAvailableGenres] = useState([]);
