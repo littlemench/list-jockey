@@ -275,15 +275,15 @@ export default function SessionPage() {
   const totalSectionDuration = getTotalSectionDuration();
 
   return (
-    <div className="min-h-screen bg-white pb-28">
-      <div className="max-w-2xl mx-auto px-6 py-8">
+    <div className="min-h-screen bg-[#f9f9f9] pb-28">
+      <div className="max-w-4xl mx-auto px-6 py-12">
         {/* Header */}
-        <header className="mb-10">
-          <Link to="/" className="text-neutral-500 hover:text-neutral-900 text-sm mb-6 inline-flex items-center gap-1 transition-colors">
+        <header className="mb-12">
+          <Link to="/" className="text-neutral-600 hover:text-black text-sm mb-8 inline-flex items-center gap-1 transition-colors font-medium">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
             </svg>
-            Sessions
+            Back to Sessions
           </Link>
 
           {isEditing ? (
@@ -315,8 +315,8 @@ export default function SessionPage() {
           ) : (
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-2xl font-medium tracking-tight text-neutral-900 mb-2">{session.name}</h1>
-                <p className="text-neutral-500">
+                <h1 className="text-5xl font-bold tracking-tight text-black mb-3">{session.name}</h1>
+                <p className="text-neutral-600 text-lg">
                   {formatDuration(totalSectionDuration)} · {session.sections.length} section{session.sections.length !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -378,11 +378,11 @@ export default function SessionPage() {
 
         {/* Section List */}
         <div className="mb-8">
-          <h2 className="text-xs text-neutral-500 uppercase tracking-wider font-medium mb-4">Sections</h2>
+          <h2 className="text-sm text-neutral-700 font-medium mb-4">Sections</h2>
 
           {session.sections.length === 0 ? (
-            <div className="text-center py-12 bg-neutral-50 rounded-2xl border border-neutral-200">
-              <p className="text-neutral-500 mb-2">No sections yet</p>
+            <div className="text-center py-20 bg-white rounded-xl">
+              <p className="text-neutral-400 text-lg mb-2">No sections yet</p>
               <p className="text-neutral-400 text-sm">Add sections to define how your soundtrack evolves</p>
             </div>
           ) : (
@@ -459,14 +459,9 @@ export default function SessionPage() {
         ) : (
           <button
             onClick={() => setShowNewSection(true)}
-            className="w-full p-5 border border-neutral-300 rounded-2xl text-neutral-500 hover:text-neutral-900 hover:border-neutral-400 transition-all mb-8 cursor-pointer"
+            className="w-full p-6 bg-black hover:bg-neutral-800 rounded-xl text-white font-medium transition-all mb-8 cursor-pointer text-lg"
           >
-            <span className="flex items-center justify-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-              </svg>
-              Add Section
-            </span>
+            Add Section
           </button>
         )}
       </div>
@@ -514,7 +509,7 @@ export default function SessionPage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                   </svg>
-                  Generate Session Playlist
+                  Generate {session.name} Playlist
                 </>
               )}
             </button>
