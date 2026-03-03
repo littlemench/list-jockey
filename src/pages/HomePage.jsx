@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSessions } from '../context/SessionContext';
 import { useSpotify } from '../context/SpotifyContext';
 import { loginWithSpotify } from '../utils/spotify';
+import Logo from '../components/Logo';
 
 export default function HomePage() {
   const { sessions, deleteSession } = useSessions();
@@ -28,10 +29,11 @@ export default function HomePage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#f9f9f9]">
         <div className="text-center max-w-4xl">
-          <h1 className="text-6xl font-bold tracking-tight text-black mb-8">
+          <Logo size={60} className="mx-auto mb-6" />
+          <h1 className="text-6xl font-bold tracking-tight text-black mb-6">
             Plan your perfect soundtrack
           </h1>
-          <p className="text-xl text-neutral-600 mb-16 leading-relaxed">
+          <p className="text-xl text-neutral-600 mb-12 leading-relaxed">
             Design the arc of your event's music. Connect with Spotify to create playlists automatically.
           </p>
           <button
