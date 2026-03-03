@@ -34,7 +34,7 @@ export default function HomePage() {
             Plan your perfect soundtrack
           </h1>
           <p className="text-xl text-neutral-600 mb-12 leading-relaxed">
-            Design the arc of your event's music. Connect with Spotify to create playlists automatically.
+            The setlist you shape in advance. Connect with Spotify to create your own soundtrack
           </p>
           <button
             onClick={loginWithSpotify}
