@@ -261,11 +261,10 @@ export async function getRecommendations({ genres = [], artists = [], tracks = [
 
   const hasInputs = genres.length > 0 || artists.length > 0 || tracks.length > 0;
   if (!hasInputs) {
-    console.error('getRecommendations: No inputs provided', { genres, artists, tracks });
     return [];
   }
 
-  console.log('getRecommendations: Fetching tracks for', { genres, artistCount: artists.length, trackCount: tracks.length });
+
 
   const allTracks = [];
   const seenIds = new Set();
@@ -305,7 +304,6 @@ export async function getRecommendations({ genres = [], artists = [], tracks = [
   const shuffled = shuffleArray(allTracks);
   const result = shuffled.slice(0, limit);
 
-  console.log('getRecommendations: Got', result.length, 'tracks');
   return result;
 }
 
@@ -322,8 +320,6 @@ export async function createPlaylist(name, description = '') {
     console.error('createPlaylist: Could not get user');
     return null;
   }
-
-  console.log('createPlaylist: Creating playlist for user', user.id);
 
   const response = await fetch(
     `https://api.spotify.com/v1/users/${user.id}/playlists`,
@@ -343,7 +339,6 @@ export async function createPlaylist(name, description = '') {
     return null;
   }
   const playlist = await response.json();
-  console.log('createPlaylist: Created playlist', playlist.id);
   return playlist;
 }
 
@@ -401,24 +396,13 @@ export async function generateSectionPlaylist(section, sessionName) {
 
 // Generate playlist for entire session (all sections combined)
 export async function generateSessionPlaylist(session) {
-  console.log('generateSessionPlaylist: Starting for session', session.name);
-  console.log('generateSessionPlaylist: Sections:', session.sections.map(s => ({
-    name: s.name,
-    genres: s.genres,
-    artists: s.artists?.length,
-    tracks: s.tracks?.length
-  })));
-
   const allTracks = [];
 
   for (const section of session.sections) {
     // Skip sections with no inputs
     if (section.genres.length === 0 && section.artists.length === 0 && section.tracks.length === 0) {
-      console.log('generateSessionPlaylist: Skipping section with no inputs:', section.name);
       continue;
     }
-
-    console.log('generateSessionPlaylist: Processing section:', section.name);
 
     const tracks = await getRecommendations({
       genres: section.genres,
@@ -429,16 +413,12 @@ export async function generateSessionPlaylist(session) {
       limit: Math.ceil(section.duration / 3.5),
     });
 
-    console.log('generateSessionPlaylist: Got', tracks.length, 'tracks for section', section.name);
     allTracks.push(...tracks);
   }
 
   if (allTracks.length === 0) {
-    console.error('generateSessionPlaylist: No tracks generated');
     return null;
   }
-
-  console.log('generateSessionPlaylist: Total tracks:', allTracks.length);
 
   // Build description from sections
   const sectionDescriptions = session.sections
@@ -451,17 +431,10 @@ export async function generateSessionPlaylist(session) {
     `Soundtrack session: ${sectionDescriptions}`
   );
 
-  if (!playlist) {
-    console.error('generateSessionPlaylist: Failed to create playlist');
-    return null;
-  }
+  if (!playlist) return null;
 
   const trackUris = allTracks.map(t => t.uri);
   const success = await addTracksToPlaylist(playlist.id, trackUris);
-
-  if (!success) {
-    console.error('generateSessionPlaylist: Failed to add tracks to playlist');
-  }
 
   return success ? playlist : null;
 }
