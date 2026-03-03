@@ -382,7 +382,7 @@ export default function SessionBuilderPage() {
   function handleAddSection() {
     const newSection = {
       id: Date.now().toString(),
-      name: `Section ${sections.length + 1}`,
+      name: 'Name your section',
       duration: 60,
       genres: [],
       artists: [],
@@ -472,12 +472,12 @@ export default function SessionBuilderPage() {
             Cancel
           </button>
           <h1 className="text-4xl font-bold tracking-tight text-black mb-4">Create New Session</h1>
-          <p className="text-neutral-600 text-base">Build your session structure and refine each section</p>
+          <p className="text-neutral-600 text-base">Add, edit and re-order sections to shape your playlist</p>
         </header>
 
         {/* Session Name */}
         <div className="mb-8">
-          <label className="block text-sm text-neutral-700 mb-2 font-medium">Session Name</label>
+          <label className="block text-base font-semibold text-black mb-4">Session Name</label>
           <input
             type="text"
             value={sessionName}
@@ -495,39 +495,46 @@ export default function SessionBuilderPage() {
           </h2>
 
           {sections.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-lg border border-black mb-4">
+            <div className="text-center py-16 bg-white rounded-lg border border-black mb-4">
               <p className="text-neutral-500 text-base mb-2">No sections yet</p>
-              <p className="text-neutral-400 text-sm">Add your first section to get started</p>
+              <p className="text-neutral-400 text-sm mb-6">Add, edit and re-order sections to shape your playlist</p>
+              <button
+                onClick={handleAddSection}
+                className="inline-flex items-center bg-black hover:bg-neutral-800 text-white font-medium text-base px-6 py-3 rounded-lg transition-all cursor-pointer"
+              >
+                Add Section
+              </button>
             </div>
           ) : (
-            <div className="space-y-3 mb-4">
-              {sections.map((section, index) => (
-                <ExpandableSection
-                  key={section.id}
-                  section={section}
-                  index={index}
-                  onUpdate={handleUpdateSection}
-                  onRemove={() => handleRemoveSection(section.id)}
-                  isExpanded={expandedSections.has(section.id)}
-                  onToggleExpand={() => handleToggleExpand(section.id)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="space-y-3 mb-4">
+                {sections.map((section, index) => (
+                  <ExpandableSection
+                    key={section.id}
+                    section={section}
+                    index={index}
+                    onUpdate={handleUpdateSection}
+                    onRemove={() => handleRemoveSection(section.id)}
+                    isExpanded={expandedSections.has(section.id)}
+                    onToggleExpand={() => handleToggleExpand(section.id)}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={handleAddSection}
+                className="w-full py-3.5 bg-white hover:bg-neutral-50 rounded-lg text-black font-medium transition-all cursor-pointer text-base border border-black"
+              >
+                Add another section
+              </button>
+            </>
           )}
-
-          <button
-            onClick={handleAddSection}
-            className="w-full py-3.5 bg-white hover:bg-neutral-50 rounded-lg text-black font-medium transition-all cursor-pointer text-base border border-black"
-          >
-            Add Section
-          </button>
         </div>
       </div>
 
       {/* Fixed Bottom Bar */}
       {sections.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent border-t border-neutral-200">
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-4">
               <span className="text-neutral-500 text-sm">Total Duration</span>
               <span className="text-neutral-900 font-medium">{formatDuration(totalDuration)}</span>
