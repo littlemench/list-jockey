@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSessions } from '../context/SessionContext';
 import { useSpotify } from '../context/SpotifyContext';
 import { loginWithSpotify } from '../utils/spotify';
-import Logo from '../components/Logo';
 
 export default function HomePage() {
   const { sessions, deleteSession } = useSessions();
@@ -29,7 +28,7 @@ export default function HomePage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#f9f9f9]">
         <div className="text-center max-w-4xl">
-          <Logo size={60} className="mx-auto mb-6" />
+          <img src="/logo.png" alt="List Jockey" className="mx-auto mb-6" style={{ height: 60 }} />
           <h1 className="text-6xl font-bold tracking-tight text-black mb-6">
             Plan your perfect soundtrack
           </h1>
